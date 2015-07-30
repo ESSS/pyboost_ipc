@@ -7,11 +7,6 @@ import numpy as np
 import pytest
 
 
-@pytest.fixture
-def shmem():
-    return managed_shared_memory(open_or_create, 'MySharedMemory', 1024)
-
-
 def test_constructor_create_only():
     managed_shared_memory(create_only, 'MySharedMemory', 1024)
     with pytest.raises(RuntimeError):

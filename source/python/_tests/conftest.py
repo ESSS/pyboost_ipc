@@ -6,3 +6,8 @@ def clear_shared_memory(request):
     from boost_ipc import shared_memory_object
     shared_memory_object.remove('MySharedMemory')
     request.addfinalizer(lambda: shared_memory_object.remove('MySharedMemory'))
+
+@pytest.fixture
+def shmem():
+    from boost_ipc import managed_shared_memory, open_or_create
+    return managed_shared_memory(open_or_create, 'MySharedMemory', 8192)
