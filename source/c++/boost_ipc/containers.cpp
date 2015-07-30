@@ -22,28 +22,30 @@ Vector_ wrap_vector_init_receiving_segment(managed_shared_memory& segment)
     return Vector_(allocator);
 }
 
-template <class Type_>
-void register_vector(std::string type_name)
+template <class Type_, bool UsingCustomConverter = false>
+struct register_vector
 {
-    typedef boost_ipc::vector<Type_>::type Vector_;
+    register_vector(std::string type_name) {
+        typedef boost_ipc::vector<Type_>::type Vector_;
 
-    //TODO [muenz]: I particularly would prefer that the user could do in python:
-    //
-    //      vector_type(ctypes.int)
-    //
-    // instead of:
-    //
-    //      vector_int
-    std::string class_name = "vector_";
-    boost::replace(type_name, ' ', '_');
-    class_name += type_name;
+        //TODO [muenz]: I particularly would prefer that the user could do in python:
+        //
+        //      vector_type(ctypes.int)
+        //
+        // instead of:
+        //
+        //      vector_int
+        std::string class_name = "vector_";
+        boost::replace(type_name, ' ', '_');
+        class_name += type_name;
 
-    class_<Vector_> c(class_name.c_str(), no_init);
-    c.def("__init__", &wrap_vector_init_receiving_segment<Vector_>);
-    c.def(vector_indexing_suite<Vector_>());
+        class_<Vector_> c(class_name.c_str(), no_init);
+        //c.def("__init__", &wrap_vector_init_receiving_segment<Vector_>);
+        c.def(vector_indexing_suite<Vector_, UsingCustomConverter>());
 
-    register_ipc_type<Vector_>();
-}
+        register_ipc_type<Vector_>();
+    }
+};
 
 void register_containers()
 {
@@ -57,5 +59,5 @@ void register_containers()
     REGISTER_VECTOR(short);
     REGISTER_VECTOR(char);
     REGISTER_VECTOR(unsigned char);
-    //register_vector<boost_ipc::string>();
+    register_vector<boost_ipc::string, true>("string");
 }

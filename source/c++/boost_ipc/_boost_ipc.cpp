@@ -10,6 +10,7 @@
 
 #include <map>
 
+
 using namespace boost::python;
 using namespace boost::interprocess;
 
@@ -62,6 +63,7 @@ void register_offset_ptrs();
 void register_shared_memory_object();
 void register_creation_tags();
 void register_containers();
+void register_string();
 
 bool g_has_loaded_boost_ipc = false;
 BOOST_IPC_DECL bool has_loaded_boost_ipc() {
@@ -79,6 +81,7 @@ BOOST_PYTHON_MODULE( boost_ipc )
     register_offset_ptrs();
     register_shared_memory_object();
     register_creation_tags();
+    register_string();
     register_containers();
 
     //TODO: finish "permissions"

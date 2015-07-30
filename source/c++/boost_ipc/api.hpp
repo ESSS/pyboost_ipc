@@ -2,7 +2,11 @@
 #define HPP_BOOST_IPC_API
 
 #include <boost/interprocess/containers/vector.hpp>
+#include <boost/interprocess/containers/string.hpp>
+
 #include <boost/interprocess/managed_shared_memory.hpp>
+
+#include <string>
 
 template <class T>
 void register_offset_ptr();
@@ -36,6 +40,8 @@ namespace boost_ipc {
         typedef MyAllocator<T> allocator;
         typedef boost::container::vector<T, allocator> type;
     };
+
+    typedef boost::interprocess::basic_string<char, std::char_traits<char>, MyAllocator<char>> string;
 }
 
 #include <boost_ipc/api.inl.hpp>

@@ -60,7 +60,6 @@ std::string receive_object_name_or_instance_type(ipcdetail::char_ptr_holder<char
         const char* inner_name = name;
         return inner_name;
     }
-
 }
 
 class class_receiving_double {
@@ -75,11 +74,23 @@ public:
     double value;
 };
 
-boost_ipc::vector<double>::type* create_vector_in_shared_memory(managed_shared_memory& shared_memory, ipcdetail::char_ptr_holder<char> name, list items) {
+boost_ipc::vector<double>::type* create_vector_double_in_shared_memory(managed_shared_memory& shared_memory, ipcdetail::char_ptr_holder<char> name, list items) {
     auto* ret = shared_memory.construct<boost_ipc::vector<double>::type>(name)(shared_memory.get_segment_manager());
     for (size_t i = 0; i < len(items); ++i) {
         double value = extract<double>(items[i]);
         ret->push_back(value);
+    }
+    return ret;
+}
+
+typedef boost_ipc::vector<boost_ipc::string>::type vector_string;
+vector_string* create_vector_string_in_shared_memory(managed_shared_memory& shared_memory, ipcdetail::char_ptr_holder<char> name, list items) {
+    auto* ret = shared_memory.construct<vector_string>(name)(shared_memory.get_segment_manager());
+    for (size_t i = 0; i < len(items); ++i) {
+        const char* value = extract<const char*>(items[i]);
+        boost_ipc::string ipc_string(shared_memory.get_segment_manager());
+        ipc_string = value;
+        ret->push_back(ipc_string);
     }
     return ret;
 }
@@ -110,5 +121,6 @@ BOOST_PYTHON_MODULE( boost_ipc_tests )
         .def_readonly("value", &class_receiving_double::value);
     register_ipc_type<class_receiving_double>();
 
-    def("create_vector_in_shared_memory", &create_vector_in_shared_memory, return_value_policy<reference_existing_object>());
+    def("create_vector_double_in_shared_memory", &create_vector_double_in_shared_memory, return_value_policy<reference_existing_object>());
+    def("create_vector_string_in_shared_memory", &create_vector_string_in_shared_memory, return_value_policy<reference_existing_object>());
 }
