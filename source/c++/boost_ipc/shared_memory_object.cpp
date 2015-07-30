@@ -9,17 +9,17 @@ void register_shared_memory_object() {
     typedef shared_memory_object T;
     class_<T, boost::shared_ptr<T>, boost::noncopyable> c("shared_memory_object", init<>());
     c.def(
-        init<create_only_t, const char *, mode_t, optional<const permissions&>>(
+        init<create_only_t, const char *, boost::interprocess::mode_t, optional<const permissions&> >(
             args("tag", "name", "mode", "permissions")
         )
     );
     c.def(
-        init<open_or_create_t, const char *, mode_t, optional<const permissions&>>(
+        init<open_or_create_t, const char *, boost::interprocess::mode_t, optional<const permissions&> >(
             args("tag", "name", "mode", "permissions")
         )
     );
     c.def(
-        init<open_only_t, const char *, mode_t>(
+        init<open_only_t, const char *, boost::interprocess::mode_t>(
             args("tag", "name", "mode")
         )
     );

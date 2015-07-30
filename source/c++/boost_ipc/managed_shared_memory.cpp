@@ -11,7 +11,7 @@ BOOST_IPC_DECL bindings_managed_shared_memory_type& get_bindings_managed_shared_
     typedef managed_shared_memory T;
     static class_<T, boost::shared_ptr<T>, boost::noncopyable> c(
         "managed_shared_memory",
-        init<create_only_t, const char *, T::size_type, optional<const void*, const permissions&>>(
+        init<create_only_t, const char *, T::size_type, optional<const void*, const permissions&> >(
             args("tag", "name", "size", "addr", "perm")
         )
     );
@@ -27,24 +27,24 @@ object wrap_allocate(boost::shared_ptr<managed_shared_memory> self, managed_shar
 
 void register_managed_shared_memory() {
     typedef managed_shared_memory T;
-    auto c = get_bindings_managed_shared_memory();
+    bindings_managed_shared_memory_type& c = get_bindings_managed_shared_memory();
     c.def(
-        init<open_or_create_t, const char *, T::size_type, optional<const void*, const permissions&>>(
+        init<open_or_create_t, const char *, T::size_type, optional<const void*, const permissions&> >(
             args("tag", "name", "size", "addr", "perm")
         )
     );
     c.def(
-        init<open_copy_on_write_t, const char *, optional<const void*>>(
+        init<open_copy_on_write_t, const char *, optional<const void*> >(
             args("tag", "name", "addr")
         )
     );
     c.def(
-        init<open_read_only_t, const char *, optional<const void*>>(
+        init<open_read_only_t, const char *, optional<const void*> >(
             args("tag", "name", "addr")
         )
     );
     c.def(
-        init<open_only_t, const char *, optional<const void*>>(
+        init<open_only_t, const char *, optional<const void*> >(
             args("tag", "name", "addr")
         )
     );

@@ -41,7 +41,7 @@ namespace boost_ipc {
         typedef boost::container::vector<T, allocator> type;
     };
 
-    typedef boost::interprocess::basic_string<char, std::char_traits<char>, MyAllocator<char>> string;
+    typedef boost::interprocess::basic_string<char, std::char_traits<char>, MyAllocator<char> > string;
 }
 
 #include <boost_ipc/api.inl.hpp>

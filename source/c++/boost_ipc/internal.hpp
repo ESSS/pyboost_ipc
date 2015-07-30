@@ -24,4 +24,4 @@ typedef boost::python::class_<
 BOOST_IPC_DECL bindings_managed_shared_memory_type& get_bindings_managed_shared_memory();
 BOOST_IPC_DECL bool has_loaded_boost_ipc();
 
-#endif HPP_BOOST_IPC_INTERNAL
+#endif // HPP_BOOST_IPC_INTERNAL

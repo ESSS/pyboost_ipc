@@ -52,13 +52,13 @@ void register_message_queue()
     typedef message_queue T;
     class_<T, boost::shared_ptr<T>, boost::noncopyable> c(
         "message_queue",
-        init<create_only_t, const char *, T::size_type, T::size_type, optional<const permissions&>>(
+        init<create_only_t, const char *, T::size_type, T::size_type, optional<const permissions&> >(
             args("tag", "name", "max_num_msg", "max_msg_size", "perm")
         )
     );
 
     c.def(
-        init<open_or_create_t, const char *, T::size_type, T::size_type, optional<const permissions&>>(
+        init<open_or_create_t, const char *, T::size_type, T::size_type, optional<const permissions&> >(
             args("tag", "name", "max_num_msg", "max_msg_size", "perm")
         )
     );

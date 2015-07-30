@@ -26,7 +26,7 @@ template <class Type_, bool UsingCustomConverter = false>
 struct register_vector
 {
     register_vector(std::string type_name) {
-        typedef boost_ipc::vector<Type_>::type Vector_;
+        typedef typename boost_ipc::vector<Type_>::type Vector_;
 
         //TODO [muenz]: I particularly would prefer that the user could do in python:
         //

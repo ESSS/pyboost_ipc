@@ -61,8 +61,7 @@ object asbuffer(offset_ptr<T>& ptr, size_t nbytes)
 template <class T>
 T* find_managed_shared_memory(boost::shared_ptr<managed_shared_memory> p_segment, boost::type<T> py_class, managed_shared_memory::segment_manager::char_ptr_holder_t p_name)
 {
-    auto pair = p_segment->find<T>(p_name);
-    return pair.first;
+    return p_segment->find<T>(p_name).first;
 }
 
 template <class T>
@@ -86,7 +85,7 @@ struct register_conversion_from_python_type_to_boost_type
         converter::registry::push_back(
             &convertible,
             &construct,
-            type_id<boost::type<T>>());
+            type_id< boost::type<T> >());
     }
 
     static void* convertible(PyObject* py_object)
@@ -113,7 +112,7 @@ struct register_conversion_from_python_type_to_boost_type
         PyObject* py_object,
         converter::rvalue_from_python_stage1_data* data)
     {
-        typedef converter::rvalue_from_python_storage<boost::type<T>> storage_type;
+        typedef converter::rvalue_from_python_storage< boost::type<T> > storage_type;
         void* storage = reinterpret_cast<storage_type*>(data)->storage.bytes;
 
         new (storage)boost::type<T>();
@@ -124,13 +123,13 @@ struct register_conversion_from_python_type_to_boost_type
 template <class Type_>
 void register_construct_proxy()
 {
-    typedef managed_shared_memory::segment_manager::construct_proxy<Type_>::type proxy_t;
+    typedef typename managed_shared_memory::segment_manager::construct_proxy<Type_>::type proxy_t;
     std::string class_name = "_proxy";
     class_name += typeid(Type_).name();
-    class_<proxy_t>(class_name.c_str(), no_init)
-        //TODO [muenz]: receive more argument types
-        .def("__call__", &proxy_t::operator(), return_value_policy<reference_existing_object>())
-        ;
+    class_<proxy_t>(class_name.c_str(), no_init);
+        ////TODO [muenz]: receive more argument types
+        //.def("__call__", &proxy_t::operator(), return_value_policy<reference_existing_object>())
+        //;
 }
 
 } //namespace 'detail'
@@ -149,7 +148,7 @@ void register_offset_ptr()
 }
 
 template <class T>
-void register_ipc_type<T>() {
+void register_ipc_type() {
     //TODO [muenz]: It would be nice if we could have this error checking here, but is_default_constructible
     //is not very easy to know, see: http://stackoverflow.com/questions/2733377/is-there-a-way-to-test-whether-a-c-class-has-a-default-constructor-other-than
     //BOOST_STATIC_ASSERT_MSG(

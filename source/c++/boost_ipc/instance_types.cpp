@@ -27,7 +27,7 @@ void register_instance_type(std::string p_var_name, ipcdetail::instance_t<T> con
     typedef wrapped_instance_t<T> class_type;
     const char* class_name = typeid(T).name();
     class_<class_type>(class_name, no_init);
-    implicitly_convertible<class_type, ipcdetail::char_ptr_holder<char>>();
+    implicitly_convertible<class_type, ipcdetail::char_ptr_holder<char> >();
     scope().attr(p_var_name.c_str()) = class_type(p_tag);
 }
 

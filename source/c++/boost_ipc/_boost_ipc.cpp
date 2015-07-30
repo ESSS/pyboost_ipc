@@ -16,10 +16,11 @@ using namespace boost::interprocess;
 
 void translate_exception(interprocess_exception const& e) {
     std::string message = e.what();
-    auto error_code = e.get_error_code();
+    error_code_t error_code = e.get_error_code();
     message += ". Error code: ";
     message += boost::lexical_cast<std::string>((int)error_code);
 
+    typedef std::map<error_code_t, std::string>::iterator iterator_type;
     static std::map<error_code_t, std::string> m;
     if (m.empty()) {
         m[system_error] = "system_error";
@@ -46,7 +47,7 @@ void translate_exception(interprocess_exception const& e) {
         m[timeout_when_locking_error] = "timeout_when_locking_error";
         m[timeout_when_waiting_error] = "timeout_when_waiting_error";
     }
-    auto it = m.find(error_code);
+    iterator_type it = m.find(error_code);
     if (it != m.end()) {
         message += "(";
         message += it->second;
@@ -88,7 +89,7 @@ BOOST_PYTHON_MODULE( boost_ipc )
     class_<permissions>("permissions", init<>());
 
     //mode_t
-    enum_<mode_t>("modes")
+    enum_<boost::interprocess::mode_t>("modes")
         .value("read_only", read_only)
         .value("read_write", read_write)
         .value("copy_on_write", copy_on_write)
