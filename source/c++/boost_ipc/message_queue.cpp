@@ -77,6 +77,10 @@ void register_message_queue()
     c.def("try_receive", &wrap_try_receive, args("buffer"));
     //c.def("timed_receive", &T::timed_receive, args("buffer", "buffer_size", "priority")); //TODO [muenz]: need bindings for boost::posix_time::ptime
 
+    c.add_property("num_msg", &T::get_num_msg);
+    c.add_property("max_msg_size", &T::get_max_msg_size);
+    c.add_property("max_msg", &T::get_max_msg);
+
     c.def("remove", &T::remove);
     c.staticmethod("remove");
 
