@@ -157,6 +157,10 @@ void register_ipc_type<T>() {
     //    "The type must be default constructible"
     //);
 
+    if (!has_loaded_boost_ipc()) {
+        throw std::runtime_error("The 'boost_ipc' bindings must be loaded before adding custom bindings");
+    }
+
     using namespace boost::python;
 
     ::detail::register_conversion_from_python_type_to_boost_type<T>();
