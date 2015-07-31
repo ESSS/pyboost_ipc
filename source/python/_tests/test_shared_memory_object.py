@@ -1,4 +1,4 @@
-from boost_ipc import create_only, modes, open_only, open_or_create, shared_memory_object
+from pyboost_ipc import create_only, modes, open_only, open_or_create, shared_memory_object
 import pytest
 
 

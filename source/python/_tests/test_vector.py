@@ -1,4 +1,4 @@
-from boost_ipc import vector_double, vector_string
+from pyboost_ipc import vector_double, vector_string
 from boost_ipc_tests import (create_vector_double_in_shared_memory,
     create_vector_string_in_shared_memory)
 

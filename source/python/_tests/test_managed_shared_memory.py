@@ -1,4 +1,4 @@
-from boost_ipc import (create_only, managed_shared_memory, open_only, open_or_create,
+from pyboost_ipc import (create_only, managed_shared_memory, open_only, open_or_create,
     unique_instance, vector_double, vector_int)
 from boost_ipc_tests import (create_struct_with_double_in_shared_memory,
     create_struct_with_offset_ptr_in_shared_memory, create_vector_in_shared_memory,

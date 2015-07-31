@@ -1,5 +1,5 @@
 def test_has_all_expected_exported_symbols():
-    import boost_ipc
+    import pyboost_ipc
     expected_symbols = {
         'anonymous_instance',
         'unique_instance',
@@ -14,4 +14,4 @@ def test_has_all_expected_exported_symbols():
         'permissions',
         'shared_memory_object',
     }
-    assert expected_symbols.issubset(dir(boost_ipc))
+    assert expected_symbols.issubset(dir(pyboost_ipc))

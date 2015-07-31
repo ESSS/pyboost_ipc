@@ -1,4 +1,4 @@
-from boost_ipc import anonymous_instance, unique_instance
+from pyboost_ipc import anonymous_instance, unique_instance
 from boost_ipc_tests import receive_object_name_or_instance_type
 import pytest
 

@@ -1,4 +1,4 @@
-from boost_ipc import managed_shared_memory, open_or_create
+from pyboost_ipc import managed_shared_memory, open_or_create
 from boost_ipc_tests import create_struct_with_offset_ptr_in_shared_memory
 
 

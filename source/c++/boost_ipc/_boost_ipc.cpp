@@ -8,8 +8,9 @@
 #include <boost/interprocess/permissions.hpp>
 #include <boost/interprocess/detail/os_file_functions.hpp>
 
-#include <map>
+#include <boost/throw_exception.hpp>
 
+#include <map>
 
 using namespace boost::python;
 using namespace boost::interprocess;
@@ -71,7 +72,7 @@ BOOST_IPC_DECL bool has_loaded_boost_ipc() {
     return g_has_loaded_boost_ipc;
 }
 
-BOOST_PYTHON_MODULE( boost_ipc )
+BOOST_PYTHON_MODULE( pyboost_ipc )
 {
     g_has_loaded_boost_ipc = true;
     register_exception_translator<interprocess_exception>(&translate_exception);

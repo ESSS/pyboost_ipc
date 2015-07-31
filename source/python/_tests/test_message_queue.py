@@ -1,4 +1,4 @@
-from boost_ipc import message_queue, open_or_create
+from pyboost_ipc import message_queue, open_or_create
 import pytest
 
 
