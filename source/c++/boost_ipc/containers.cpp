@@ -13,15 +13,6 @@
 using namespace boost::interprocess;
 using namespace boost::python;
 
-template <class Vector_>
-Vector_ wrap_vector_init_receiving_segment(managed_shared_memory& segment)
-{
-    typedef typename Vector_::value_type T;
-    typedef typename Vector_::allocator_type allocator_type;
-    allocator_type allocator(segment.get_segment_manager());
-    return Vector_(allocator);
-}
-
 template <class Type_, bool UsingCustomConverter = false>
 struct register_vector
 {
@@ -39,9 +30,8 @@ struct register_vector
         boost::replace(type_name, ' ', '_');
         class_name += type_name;
 
-        class_<Vector_> c(class_name.c_str(), no_init);
-        //c.def("__init__", &wrap_vector_init_receiving_segment<Vector_>);
-        c.def(vector_indexing_suite<Vector_, UsingCustomConverter>());
+        class_<Vector_>(class_name.c_str(), no_init)
+            .def(vector_indexing_suite<Vector_, UsingCustomConverter>());
 
         register_ipc_type<Vector_>();
     }
