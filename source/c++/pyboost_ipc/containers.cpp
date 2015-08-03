@@ -6,7 +6,7 @@
 
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
-#include <boost_ipc/api.hpp>
+#include <pyboost_ipc/api.hpp>
 
 #include <boost/range/algorithm/replace.hpp>
 

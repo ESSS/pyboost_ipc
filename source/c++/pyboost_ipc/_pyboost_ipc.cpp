@@ -1,6 +1,6 @@
 #include <boost/python.hpp>
 
-#include "boost_ipc/internal.hpp"
+#include "pyboost_ipc/internal.hpp"
 
 #include <boost/interprocess/exceptions.hpp>
 #include <boost/lexical_cast.hpp>
@@ -68,13 +68,14 @@ void register_containers();
 void register_string();
 
 bool g_has_loaded_boost_ipc = false;
-BOOST_IPC_DECL bool has_loaded_boost_ipc() {
+BOOST_IPC_EXPORT bool has_loaded_boost_ipc() {
     return g_has_loaded_boost_ipc;
 }
 
 BOOST_PYTHON_MODULE( pyboost_ipc )
 {
     g_has_loaded_boost_ipc = true;
+
     register_exception_translator<interprocess_exception>(&translate_exception);
 
     register_message_queue();

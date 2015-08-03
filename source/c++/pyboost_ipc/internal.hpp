@@ -5,15 +5,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/interprocess/interprocess_fwd.hpp>
 
-#ifdef _WINDOWS
-#   ifdef BOOST_IPC_EXPORT
-#       define BOOST_IPC_DECL __declspec(dllexport)
-#   else
-#       define BOOST_IPC_DECL __declspec(dllimport)
-#   endif
-#else
-#   define BOOST_IPC_DECL
-#endif
+#include "export.hpp"
 
 typedef boost::python::class_<
     boost::interprocess::managed_shared_memory,
@@ -21,7 +13,7 @@ typedef boost::python::class_<
     boost::noncopyable
 > bindings_managed_shared_memory_type;
 
-BOOST_IPC_DECL bindings_managed_shared_memory_type& get_bindings_managed_shared_memory();
-BOOST_IPC_DECL bool has_loaded_boost_ipc();
+BOOST_IPC_EXPORT bindings_managed_shared_memory_type& get_bindings_managed_shared_memory();
+BOOST_IPC_EXPORT bool has_loaded_boost_ipc();
 
 #endif // HPP_BOOST_IPC_INTERNAL

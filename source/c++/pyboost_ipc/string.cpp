@@ -2,7 +2,7 @@
 #include <boost/python/def.hpp>
 #include <boost/python/to_python_converter.hpp>
 
-#include <boost_ipc/api.hpp>
+#include <pyboost_ipc/api.hpp>
 
 #include <boost/interprocess/managed_shared_memory.hpp>
 

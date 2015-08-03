@@ -44,6 +44,6 @@ namespace boost_ipc {
     typedef boost::interprocess::basic_string<char, std::char_traits<char>, MyAllocator<char> > string;
 }
 
-#include <boost_ipc/api.inl.hpp>
+#include <pyboost_ipc/api.inl.hpp>
 
 #endif // HPP_BOOST_IPC_API

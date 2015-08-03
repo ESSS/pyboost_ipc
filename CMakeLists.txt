@@ -35,24 +35,7 @@ include_directories(
     source/c++
 )
 
-# 
-set(SOURCES
-    source/c++/boost_ipc/api.hpp
-    source/c++/boost_ipc/api.inl.hpp
-    source/c++/boost_ipc/internal.hpp
-    source/c++/boost_ipc/_boost_ipc.cpp
-    source/c++/boost_ipc/containers.cpp
-    source/c++/boost_ipc/creation_tags.cpp
-    source/c++/boost_ipc/instance_types.cpp
-    source/c++/boost_ipc/managed_shared_memory.cpp
-    source/c++/boost_ipc/message_queue.cpp
-    source/c++/boost_ipc/offset_ptrs.cpp
-    source/c++/boost_ipc/shared_memory_object.cpp
-    source/c++/boost_ipc/string.cpp
-)
-
 add_definitions(
-    -DBOOST_IPC_EXPORT
     -DBOOST_ALL_NO_LIB  # since we link the libraries using cmake we disable auto-linking
 )
 
@@ -62,28 +45,52 @@ if (${MSVC})
     link_directories(${PYTHON_LIBRARIES})
 endif()
 
-add_library(pyboost_ipc SHARED ${SOURCES})
+macro(add_python_c_extension target sources)
+    add_library(${target} SHARED ${sources})
 
-# -fPIC
-set_property(TARGET pyboost_ipc PROPERTY POSITION_INDEPENDENT_CODE 1)
+    # -fPIC
+    set_property(TARGET ${target} PROPERTY POSITION_INDEPENDENT_CODE 1)
 
-# suffix and prefix
-if (${MSVC})
-    set_target_properties(pyboost_ipc PROPERTIES SUFFIX ".pyd")
-    set(CMAKE_CXX_FLAGS "/EHsc /bigobj")
-endif()
-set_target_properties(pyboost_ipc PROPERTIES PREFIX "")
+    # suffix and prefix
+    if (${MSVC})
+        set_target_properties(${target} PROPERTIES SUFFIX ".pyd")
+        set(CMAKE_CXX_FLAGS "/EHsc /bigobj")
+    endif()
+    set_target_properties(${target} PROPERTIES PREFIX "")
 
-# Linking with Python
-if (NOT ${MSVC})
-    target_link_libraries(pyboost_ipc ${PYTHON_LIBRARIES})
-endif()
+    # Linking with Python
+    if (NOT ${MSVC})
+        target_link_libraries(${target} ${PYTHON_LIBRARIES})
+    endif()
 
-# linking with Boost.Python
-target_link_libraries(pyboost_ipc
-    ${Boost_LIBRARIES}
+    # linking with Boost.Python
+    target_link_libraries(${target}
+        ${Boost_LIBRARIES}
+    )
+endmacro()
+
+# TARGET=pyboost_ipc
+file(GLOB_RECURSE SOURCES source/c++/pyboost_ipc/*.*)
+add_python_c_extension(pyboost_ipc "${SOURCES}")
+include (GenerateExportHeader)
+generate_export_header(pyboost_ipc
+    BASE_NAME BOOST_IPC
+    EXPORT_MACRO_NAME BOOST_IPC_EXPORT
+    EXPORT_FILE_NAME exports/export.hpp
 )
+target_include_directories(pyboost_ipc PUBLIC ${CMAKE_BINARY_DIR}/exports)
 
+# TARGET=pyboost_ipc_tests
+add_python_c_extension(pyboost_ipc_tests source/c++/pyboost_ipc_tests/_pyboost_ipc_tests.cpp)
+target_link_libraries(pyboost_ipc_tests pyboost_ipc)
+
+# Tests
+enable_testing()
+add_test(NAME python_tests
+    COMMAND py.test ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+
+# Install
 message(STATUS "Will install to: ${PYTHON_SITE_PACKAGES}")
 install(TARGETS pyboost_ipc
     RUNTIME DESTINATION ${PYTHON_SITE_PACKAGES}

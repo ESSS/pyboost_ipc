@@ -1,7 +1,7 @@
 #ifndef HPP_INL_BOOST_IPC_API
 #define HPP_INL_BOOST_IPC_API
 
-#include <boost_ipc/api.hpp>
+#include <pyboost_ipc/api.hpp>
 
 #include <boost/python.hpp>
 
@@ -9,7 +9,7 @@
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/type_traits.hpp>
 
-#include "boost_ipc/internal.hpp"
+#include "pyboost_ipc/internal.hpp"
 
 namespace detail {
 

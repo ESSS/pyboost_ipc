@@ -5,7 +5,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <boost_ipc/api.hpp>
+#include <pyboost_ipc/api.hpp>
 
 using namespace boost::python;
 using namespace boost::interprocess;

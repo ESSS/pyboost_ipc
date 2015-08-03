@@ -2,12 +2,12 @@
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include "boost_ipc/internal.hpp"
+#include "pyboost_ipc/internal.hpp"
 
 using namespace boost::interprocess;
 using namespace boost::python;
 
-BOOST_IPC_DECL bindings_managed_shared_memory_type& get_bindings_managed_shared_memory() {
+BOOST_IPC_EXPORT bindings_managed_shared_memory_type& get_bindings_managed_shared_memory() {
     typedef managed_shared_memory T;
     static class_<T, boost::shared_ptr<T>, boost::noncopyable> c(
         "managed_shared_memory",
