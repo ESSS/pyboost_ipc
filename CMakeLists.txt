@@ -75,7 +75,6 @@ endif()
 set_target_properties(pyboost_ipc PROPERTIES PREFIX "")
 
 # Linking with Python
-message("pylibs: " ${PYTHON_LIBRARIES})
 if (NOT ${MSVC})
     target_link_libraries(pyboost_ipc ${PYTHON_LIBRARIES})
 endif()
