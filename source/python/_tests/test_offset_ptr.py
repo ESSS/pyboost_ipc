@@ -1,5 +1,5 @@
 from pyboost_ipc import managed_shared_memory, open_or_create
-from boost_ipc_tests import create_struct_with_offset_ptr_in_shared_memory
+from pyboost_ipc_tests import create_struct_with_offset_ptr_in_shared_memory
 
 
 def test_exports_buffer_interface():

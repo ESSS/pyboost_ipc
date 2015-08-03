@@ -1,6 +1,6 @@
 from pyboost_ipc import (create_only, managed_shared_memory, open_only, open_or_create,
     unique_instance, vector_double, vector_int)
-from boost_ipc_tests import (create_struct_with_double_in_shared_memory,
+from pyboost_ipc_tests import (create_struct_with_double_in_shared_memory,
     create_struct_with_offset_ptr_in_shared_memory, create_vector_in_shared_memory,
     struct_with_double, struct_with_offset_ptr)
 import numpy as np
@@ -100,7 +100,7 @@ def test_construct(shmem):
 
 @pytest.mark.xfail(reason='Not implemented yet')
 def test_construct_class_with_args(shmem):
-    from boost_ipc_tests import class_receiving_double
+    from pyboost_ipc_tests import class_receiving_double
     constructed = shmem.construct(class_receiving_double, unique_instance)(1.5)
     with pytest.raises(Exception):
         shmem.construct(class_receiving_double, unique_instance)()
