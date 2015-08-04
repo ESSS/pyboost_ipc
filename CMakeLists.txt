@@ -87,4 +87,10 @@ message(STATUS "Will install to: ${PYTHON_SITE_PACKAGES}")
 install(TARGETS pyboost_ipc
     RUNTIME DESTINATION ${PYTHON_SITE_PACKAGES}
     LIBRARY DESTINATION ${PYTHON_SITE_PACKAGES}
+)install(FILES
+install(FILES
+    source/c++/pyboost_ipc/api.hpp
+    source/c++/pyboost_ipc/api.inl.hpp
+    source/c++/pyboost_ipc/internal.hpp
+    DESTINATION include/pyboost_ipc
 )
