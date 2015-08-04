@@ -8,6 +8,17 @@ To provide an almost 1-1 of the Boost.Interprocess library. It is not meant to e
 
 The ideal usage scenario is when you have a C++ code and you want to expose its data through IPC (using Boost.Interprocess) and receive that data in python.
 
+# Requirements
+
+**Required**:
+
+- Python 2.x (not yet tested on Python 3)
+- Boost (tested only on version 1.55+)
+
+**Optional**:
+
+- numpy (to run the tests)
+
 # Building
 
 Out-of-source builds will be assumed, if you don't know what that is, read about it here: http://www.cmake.org/Wiki/CMake_FAQ#Out-of-source_build_trees
@@ -26,9 +37,19 @@ The cmake scripts will use what the cmake `find_package(PythonLibs)` returns. In
 
 # Running tests
 
-Tests are written using [pytest](http://pytest.org/latest/). CTest can be used to run them.
+Tests are written using [pytest](http://pytest.org/latest/). 
+
+To run the tests, the option `COMPILE_TESTS` must be passed to CMake so that the `pyboost_ipc_tests` is compiled too.
+
+CTest can then be used to run them.
 
 `ctest .`
+
+or:
+
+`ctest -C Debug --output-on-failure` (for better error messages if the tests fail)
+
+If using Windows, don't forget that the `PATH` variable must be set to a directory containing the Boost.Python dll.
 
 # Using the library
 
