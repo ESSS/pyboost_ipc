@@ -14,7 +14,7 @@ compiler:
 
 before_install:
     - mkdir /tmp/cmake-installation
-    - cd cmake-installation
+    - cd /tmp/cmake-installation
     - touch more
     - chmod a+x more
     - wget http://www.cmake.org/files/v3.3/cmake-3.3.0-Linux-x86_64.sh
