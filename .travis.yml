@@ -23,7 +23,7 @@ before_install:
     - cd -
 
 install:
-    - sudo apt-get install libboost-dev
+    - sudo apt-get install libboost-python-dev
 
 script:
     - mkdir build
