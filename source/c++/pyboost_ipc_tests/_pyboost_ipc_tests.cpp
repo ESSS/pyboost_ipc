@@ -95,9 +95,9 @@ vector_string* create_vector_string_in_shared_memory(managed_shared_memory& shar
     return ret;
 }
 
-BOOST_PYTHON_MODULE( boost_ipc_tests )
+BOOST_PYTHON_MODULE( pyboost_ipc_tests )
 {
-    import("boost_ipc");
+    import("pyboost_ipc");
 
     def("receive_creation_tag", static_cast<int(*)(create_only_t)>(&receive_creation_tag));
     def("receive_creation_tag", static_cast<int(*)(open_only_t)>(&receive_creation_tag));
