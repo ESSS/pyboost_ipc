@@ -156,17 +156,18 @@ void register_ipc_type() {
     //    "The type must be default constructible"
     //);
 
-    if (!has_loaded_boost_ipc()) {
-        throw std::runtime_error("The 'boost_ipc' bindings must be loaded before adding custom bindings");
-    }
-
     using namespace boost::python;
+    auto m = import("pyboost_ipc");
 
     ::detail::register_conversion_from_python_type_to_boost_type<T>();
     ::detail::register_construct_proxy<T>();
 
-    get_bindings_managed_shared_memory().def("find", &::detail::find_managed_shared_memory<T>, return_value_policy<reference_existing_object>());
-    get_bindings_managed_shared_memory().def("construct", &::detail::construct_managed_shared_memory<T>);
+    object pyobject_bindings_managed_shared_memory = m.attr("_void_ptr_get_bindings_managed_shared_memory")();
+    void* ptr = extract<void*>(pyobject_bindings_managed_shared_memory)();
+    bindings_managed_shared_memory_type& c = *(bindings_managed_shared_memory_type*) ptr;
+
+    c.def("find", &::detail::find_managed_shared_memory<T>, return_value_policy<reference_existing_object>());
+    c.def("construct", &::detail::construct_managed_shared_memory<T>);
 }
 
 #endif //HPP_INL_BOOST_API

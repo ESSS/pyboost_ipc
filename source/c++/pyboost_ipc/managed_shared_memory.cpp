@@ -7,7 +7,7 @@
 using namespace boost::interprocess;
 using namespace boost::python;
 
-BOOST_IPC_EXPORT bindings_managed_shared_memory_type& get_bindings_managed_shared_memory() {
+bindings_managed_shared_memory_type& get_bindings_managed_shared_memory() {
     typedef managed_shared_memory T;
     static class_<T, boost::shared_ptr<T>, boost::noncopyable> c(
         "managed_shared_memory",
@@ -25,9 +25,17 @@ object wrap_allocate(boost::shared_ptr<managed_shared_memory> self, managed_shar
     return retval;
 }
 
+void* void_ptr_get_bindings_managed_shared_memory() {
+    auto& ptr = get_bindings_managed_shared_memory();
+    return &ptr;
+}
+
 void register_managed_shared_memory() {
     typedef managed_shared_memory T;
-    bindings_managed_shared_memory_type& c = get_bindings_managed_shared_memory();
+
+    def("_void_ptr_get_bindings_managed_shared_memory", &void_ptr_get_bindings_managed_shared_memory, return_value_policy<return_opaque_pointer>());
+
+    bindings_managed_shared_memory_type& c = *(bindings_managed_shared_memory_type*) void_ptr_get_bindings_managed_shared_memory();
     c.def(
         init<open_or_create_t, const char *, T::size_type, optional<const void*, const permissions&> >(
             args("tag", "name", "size", "addr", "perm")

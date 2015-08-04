@@ -72,17 +72,9 @@ endmacro()
 # TARGET=pyboost_ipc
 file(GLOB_RECURSE SOURCES source/c++/pyboost_ipc/*.*)
 add_python_c_extension(pyboost_ipc "${SOURCES}")
-include (GenerateExportHeader)
-generate_export_header(pyboost_ipc
-    BASE_NAME BOOST_IPC
-    EXPORT_MACRO_NAME BOOST_IPC_EXPORT
-    EXPORT_FILE_NAME exports/export.hpp
-)
-target_include_directories(pyboost_ipc PUBLIC ${CMAKE_BINARY_DIR}/exports)
 
 # TARGET=pyboost_ipc_tests
 add_python_c_extension(pyboost_ipc_tests source/c++/pyboost_ipc_tests/_pyboost_ipc_tests.cpp)
-target_link_libraries(pyboost_ipc_tests pyboost_ipc)
 
 # Tests
 enable_testing()
