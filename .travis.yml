@@ -14,8 +14,10 @@ compiler:
 
 before_install:
     - cd /tmp
+    - touch more
+    - chmod a+x more
     - wget http://www.cmake.org/files/v3.3/cmake-3.3.0-Linux-x86_64.sh
-    - yes | sudo sh cmake-3.3.0-Linux-x86_64.sh --prefix=/opt 1>&2
+    - yes | PATH=.:$PATH sudo sh cmake-3.3.0-Linux-x86_64.sh --prefix=/opt
     - sudo ln -f -s /opt/cmake-3.3.0-Linux-x86_64/bin/cmake /usr/local/bin/cmake
 
 install:
