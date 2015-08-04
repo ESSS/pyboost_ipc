@@ -1,3 +1,8 @@
+# Options:
+#
+# [optional] - COMPILE_TESTS: Will compile the 'pyboost_ipc_tests' c++ module too. This module is necessary to run the tests of the project.
+# 
+
 cmake_minimum_required(VERSION 3.0)
 
 project(pyboost_ipc)
@@ -77,17 +82,28 @@ add_python_c_extension(pyboost_ipc "${SOURCES}")
 add_python_c_extension(pyboost_ipc_tests source/c++/pyboost_ipc_tests/_pyboost_ipc_tests.cpp)
 
 # Tests
-enable_testing()
-add_test(NAME python_tests
-    COMMAND py.test ${CMAKE_CURRENT_SOURCE_DIR}
+option(COMPILE_TESTS "Compile test modules (necessary to run the python tests)" false)
+if (${COMPILE_TESTS})
+    enable_testing()
+    add_test(NAME python_tests
+        COMMAND py.test ${CMAKE_CURRENT_SOURCE_DIR}
     )
+endif()
 
 # Install
 message(STATUS "Will install to: ${PYTHON_SITE_PACKAGES}")
 install(TARGETS pyboost_ipc
     RUNTIME DESTINATION ${PYTHON_SITE_PACKAGES}
     LIBRARY DESTINATION ${PYTHON_SITE_PACKAGES}
-)install(FILES
+)
+
+if (${COMPILE_TESTS})
+    install(TARGETS pyboost_ipc_tests
+        RUNTIME DESTINATION ${PYTHON_SITE_PACKAGES}
+        LIBRARY DESTINATION ${PYTHON_SITE_PACKAGES}
+    )
+endif()
+
 install(FILES
     source/c++/pyboost_ipc/api.hpp
     source/c++/pyboost_ipc/api.inl.hpp

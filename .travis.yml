@@ -22,4 +22,4 @@ script:
     - cmake ..
     - cmake --build .
     - make install
-    - py.test source/python
+    - ctest --output-on-failure
