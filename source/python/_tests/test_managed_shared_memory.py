@@ -1,10 +1,11 @@
-from pyboost_ipc import (create_only, managed_shared_memory, open_only, open_or_create,
-    unique_instance, vector_double, vector_int)
-from pyboost_ipc_tests import (create_struct_with_double_in_shared_memory,
-    create_struct_with_offset_ptr_in_shared_memory, create_vector_in_shared_memory,
-    struct_with_double, struct_with_offset_ptr)
 import numpy as np
 import pytest
+
+from pyboost_ipc import (create_only, managed_shared_memory, open_only, open_or_create,
+                         unique_instance, vector_double)
+from pyboost_ipc_tests import (create_struct_with_double_in_shared_memory,
+                               create_struct_with_offset_ptr_in_shared_memory, create_vector_double_in_shared_memory,
+                               struct_with_double, struct_with_offset_ptr, class_receiving_double)
 
 
 def test_constructor_create_only():
@@ -86,11 +87,12 @@ def test_find_with_different_object_names(shmem):
     assert find_obj2.value == 2.5
 
 def test_find_vector(shmem):
-    create_vector_in_shared_memory(shmem, 'my vector', [1.5, 2.5])
+    create_vector_double_in_shared_memory(shmem, 'my vector', [1.5, 2.5])
 
     find = shmem.find(vector_double, 'my vector')
     assert list(find) == [1.5, 2.5]
 
+@pytest.mark.xfail(reason='not implemented yet')
 def test_construct(shmem):
     constructed = shmem.construct(struct_with_double, unique_instance)()
     constructed.value = 1.5
@@ -100,7 +102,6 @@ def test_construct(shmem):
 
 @pytest.mark.xfail(reason='Not implemented yet')
 def test_construct_class_with_args(shmem):
-    from pyboost_ipc_tests import class_receiving_double
     constructed = shmem.construct(class_receiving_double, unique_instance)(1.5)
     with pytest.raises(Exception):
         shmem.construct(class_receiving_double, unique_instance)()
