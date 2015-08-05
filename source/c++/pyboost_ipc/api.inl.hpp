@@ -157,7 +157,7 @@ void register_ipc_type() {
     //);
 
     using namespace boost::python;
-    auto m = import("pyboost_ipc");
+    object m = import("pyboost_ipc");
 
     ::detail::register_conversion_from_python_type_to_boost_type<T>();
     ::detail::register_construct_proxy<T>();

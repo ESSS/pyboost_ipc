@@ -74,8 +74,9 @@ public:
     double value;
 };
 
+typedef boost_ipc::vector<double>::type vector_double;
 boost_ipc::vector<double>::type* create_vector_double_in_shared_memory(managed_shared_memory& shared_memory, ipcdetail::char_ptr_holder<char> name, list items) {
-    auto* ret = shared_memory.construct<boost_ipc::vector<double>::type>(name)(shared_memory.get_segment_manager());
+    vector_double* ret = shared_memory.construct<vector_double>(name)(shared_memory.get_segment_manager());
     for (size_t i = 0; i < len(items); ++i) {
         double value = extract<double>(items[i]);
         ret->push_back(value);
@@ -85,7 +86,7 @@ boost_ipc::vector<double>::type* create_vector_double_in_shared_memory(managed_s
 
 typedef boost_ipc::vector<boost_ipc::string>::type vector_string;
 vector_string* create_vector_string_in_shared_memory(managed_shared_memory& shared_memory, ipcdetail::char_ptr_holder<char> name, list items) {
-    auto* ret = shared_memory.construct<vector_string>(name)(shared_memory.get_segment_manager());
+    vector_string* ret = shared_memory.construct<vector_string>(name)(shared_memory.get_segment_manager());
     for (size_t i = 0; i < len(items); ++i) {
         const char* value = extract<const char*>(items[i]);
         boost_ipc::string ipc_string(shared_memory.get_segment_manager());

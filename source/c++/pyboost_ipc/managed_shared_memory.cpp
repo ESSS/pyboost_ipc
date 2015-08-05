@@ -26,7 +26,7 @@ object wrap_allocate(boost::shared_ptr<managed_shared_memory> self, managed_shar
 }
 
 void* void_ptr_get_bindings_managed_shared_memory() {
-    auto& ptr = get_bindings_managed_shared_memory();
+    bindings_managed_shared_memory_type& ptr = get_bindings_managed_shared_memory();
     return &ptr;
 }
 
