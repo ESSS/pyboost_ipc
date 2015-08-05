@@ -77,6 +77,9 @@ endmacro()
 # TARGET=pyboost_ipc
 file(GLOB_RECURSE SOURCES source/c++/pyboost_ipc/*.*)
 add_python_c_extension(pyboost_ipc "${SOURCES}")
+if (UNIX)
+    target_link_libraries(pyboost_ipc rt)
+endif()
 
 # TARGET=pyboost_ipc_tests
 add_python_c_extension(pyboost_ipc_tests source/c++/pyboost_ipc_tests/_pyboost_ipc_tests.cpp)
@@ -84,6 +87,7 @@ add_python_c_extension(pyboost_ipc_tests source/c++/pyboost_ipc_tests/_pyboost_i
 # Tests
 option(COMPILE_TESTS "Compile test modules (necessary to run the python tests)" false)
 if (${COMPILE_TESTS})
+    message(STATUS "Will compile tests too")
     enable_testing()
     add_test(NAME python_tests
         COMMAND py.test ${CMAKE_CURRENT_SOURCE_DIR}
