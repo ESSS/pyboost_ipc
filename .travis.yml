@@ -32,5 +32,5 @@ script:
     - cd build
     - cmake ..
     - cmake --build .
-    - make install
+    - sudo make install
     - ctest --output-on-failure
