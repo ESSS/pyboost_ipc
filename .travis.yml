@@ -21,6 +21,8 @@ before_install:
     - yes | sudo PATH=/tmp/cmake-installation:$PATH sh cmake-3.3.0-Linux-x86_64.sh --prefix=/opt
     - sudo ln -f -s /opt/cmake-3.3.0-Linux-x86_64/bin/cmake /usr/local/bin/cmake
     - cd -
+    - sudo add-apt-repository -y ppa:boost-latest/ppa
+    - sudo apt-get update 
 
 install:
     - sudo apt-get install libboost-python1.55-dev
