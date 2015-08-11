@@ -1,7 +1,7 @@
 # Options:
 #
 # [optional] - COMPILE_TESTS: Will compile the 'pyboost_ipc_tests' c++ module too. This module is necessary to run the tests of the project.
-# 
+#
 
 cmake_minimum_required(VERSION 3.0)
 
@@ -9,11 +9,26 @@ project(pyboost_ipc)
 
 find_package(Boost REQUIRED COMPONENTS python)
 
-find_package(PythonLibs)
 find_package(PythonInterp REQUIRED)
 
+# Detect if we're running a python created with conda
+if(DEFINED ENV{CONDA_ENV_PATH})
+    message(STATUS "Conda detected")
+    if (NOT ${PYTHONINTERP_FOUND})
+        message(FATAL_ERROR "Your python-conda is configured in a strange-way...we couldn't find the interpreter")
+    endif()
+
+    if ((NOT DEFINED ${PYTHON_LIBRARY})  AND (NOT DEFINED ${PYTHON_INCLUDE_DIR}))
+        set(PYTHON_LIBRARY $ENV{CONDA_ENV_PATH}/lib)
+        execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print get_python_inc(True)" OUTPUT_VARIABLE PYTHON_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
+        message(STATUS "  PYTHON_LIBRARY=${PYTHON_LIBRARY}")
+        message(STATUS "  PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
+    endif()
+endif()
+
+find_package(PythonLibs)
+
 if (NOT ${PYTHONLIBS_FOUND})
-    # attempt to find python if 'python.exe' is found
     message(STATUS "Trying to use the 'libs' and 'Include' directories at the python interpreter path")
     if (NOT ${PYTHONINTERP_FOUND})
         message(FATAL_ERROR "Didn't find the python libraries nor a python interpreter. You can pass the variables:
@@ -30,7 +45,6 @@ if (NOT ${PYTHONLIBS_FOUND})
     execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print get_python_inc(True)" OUTPUT_VARIABLE PYTHON_INCLUDE_DIRS OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif()
 
-# get the 'site-packages' directory
 execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(True)" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 include_directories(
