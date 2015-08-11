@@ -57,13 +57,13 @@ if (UNIX)
     target_link_libraries(pyboost_ipc rt)
 endif()
 
-# TARGET=pyboost_ipc_tests
-python_add_module(pyboost_ipc_tests source/c++/pyboost_ipc_tests/_pyboost_ipc_tests.cpp)
-target_link_libraries(pyboost_ipc_tests ${Boost_LIBRARIES})
-
 # Tests
 option(COMPILE_TESTS "Compile test modules (necessary to run the python tests)" false)
 if (${COMPILE_TESTS})
+    # TARGET=pyboost_ipc_tests
+    python_add_module(pyboost_ipc_tests source/c++/pyboost_ipc_tests/_pyboost_ipc_tests.cpp)
+    target_link_libraries(pyboost_ipc_tests ${Boost_LIBRARIES})
+
     message(STATUS "Will compile tests too")
     enable_testing()
     add_test(NAME python_tests
