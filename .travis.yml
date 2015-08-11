@@ -33,4 +33,4 @@ script:
     - cmake .. -DCOMPILE_TESTS=True
     - cmake --build .
     - sudo make install
-    - ctest --output-on-failure .
+    - py.test ../source/python
