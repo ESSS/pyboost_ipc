@@ -40,6 +40,7 @@ before_install:
 
 install:
     - # Create python environment with the dependencies
+    - echo $TRAVIS_PYTHON_VERSION
     - conda create -q -n env-pyboost_ipc python=$TRAVIS_PYTHON_VERSION numpy pytest
     - sudo apt-get install libboost-python1.55-dev
 
