@@ -33,4 +33,4 @@ script:
     - cmake ..
     - cmake --build .
     - sudo make install
-    - ctest --output-on-failure
+    - ctest --output-on-failure .
