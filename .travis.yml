@@ -30,7 +30,7 @@ install:
 script:
     - mkdir build
     - cd build
-    - cmake ..
+    - cmake .. -DCOMPILE_TESTS=True
     - cmake --build .
     - sudo make install
     - ctest --output-on-failure .
