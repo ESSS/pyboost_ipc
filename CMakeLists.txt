@@ -52,12 +52,14 @@ endif()
 # TARGET=pyboost_ipc
 file(GLOB_RECURSE SOURCES source/c++/pyboost_ipc/*.*)
 python_add_module(pyboost_ipc "${SOURCES}")
+target_link_libraries(pyboost_ipc ${Boost_LIBRARIES})
 if (UNIX)
     target_link_libraries(pyboost_ipc rt)
 endif()
 
 # TARGET=pyboost_ipc_tests
 python_add_module(pyboost_ipc_tests source/c++/pyboost_ipc_tests/_pyboost_ipc_tests.cpp)
+target_link_libraries(pyboost_ipc_tests ${Boost_LIBRARIES})
 
 # Tests
 option(COMPILE_TESTS "Compile test modules (necessary to run the python tests)" false)
