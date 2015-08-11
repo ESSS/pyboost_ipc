@@ -20,7 +20,7 @@ if(DEFINED ENV{CONDA_ENV_PATH})
 
     if ((NOT DEFINED ${PYTHON_LIBRARY})  AND (NOT DEFINED ${PYTHON_INCLUDE_DIR}))
         set(PYTHON_LIBRARY $ENV{CONDA_ENV_PATH}/lib)
-        execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print get_python_inc(True)" OUTPUT_VARIABLE PYTHON_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
+        execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
         message(STATUS "  PYTHON_LIBRARY=${PYTHON_LIBRARY}")
         message(STATUS "  PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
     endif()
@@ -42,10 +42,10 @@ if (NOT ${PYTHONLIBS_FOUND})
 
     get_filename_component(PYTHONINTERP_PATH ${PYTHON_EXECUTABLE} DIRECTORY)
     set(PYTHON_LIBRARIES ${PYTHONINTERP_PATH}/libs)
-    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print get_python_inc(True)" OUTPUT_VARIABLE PYTHON_INCLUDE_DIRS OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INCLUDE_DIRS OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif()
 
-execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(True)" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 include_directories(
     ${Boost_INCLUDE_DIRS}
