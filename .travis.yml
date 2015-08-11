@@ -22,6 +22,7 @@ before_install:
     - sudo ln -f -s /opt/cmake-3.3.0-Linux-x86_64/bin/cmake /usr/local/bin/cmake
     - cd -
     - sudo pip install -U pytest
+    - sudo apt-get install python-numpy
     - sudo add-apt-repository -y ppa:boost-latest/ppa
     - sudo apt-get update 
 
