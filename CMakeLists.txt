@@ -27,8 +27,7 @@ if (NOT ${PYTHONLIBS_FOUND})
 
     get_filename_component(PYTHONINTERP_PATH ${PYTHON_EXECUTABLE} DIRECTORY)
     set(PYTHON_LIBRARIES ${PYTHONINTERP_PATH}/libs)
-    set(PYTHON_INCLUDE_DIRS ${PYTHONINTERP_PATH}/include)
-    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(True)" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print get_python_inc(True)" OUTPUT_VARIABLE PYTHON_INCLUDE_DIRS OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif()
 
 # get the 'site-packages' directory
@@ -50,39 +49,15 @@ if (${MSVC})
     link_directories(${PYTHON_LIBRARIES})
 endif()
 
-macro(add_python_c_extension target sources)
-    add_library(${target} SHARED ${sources})
-
-    # -fPIC
-    set_property(TARGET ${target} PROPERTY POSITION_INDEPENDENT_CODE 1)
-
-    # suffix and prefix
-    if (${MSVC})
-        set_target_properties(${target} PROPERTIES SUFFIX ".pyd")
-        set(CMAKE_CXX_FLAGS "/EHsc /bigobj")
-    endif()
-    set_target_properties(${target} PROPERTIES PREFIX "")
-
-    # Linking with Python
-    if (NOT ${MSVC})
-        target_link_libraries(${target} ${PYTHON_LIBRARIES})
-    endif()
-
-    # linking with Boost.Python
-    target_link_libraries(${target}
-        ${Boost_LIBRARIES}
-    )
-endmacro()
-
 # TARGET=pyboost_ipc
 file(GLOB_RECURSE SOURCES source/c++/pyboost_ipc/*.*)
-add_python_c_extension(pyboost_ipc "${SOURCES}")
+python_add_module(pyboost_ipc "${SOURCES}")
 if (UNIX)
     target_link_libraries(pyboost_ipc rt)
 endif()
 
 # TARGET=pyboost_ipc_tests
-add_python_c_extension(pyboost_ipc_tests source/c++/pyboost_ipc_tests/_pyboost_ipc_tests.cpp)
+python_add_module(pyboost_ipc_tests source/c++/pyboost_ipc_tests/_pyboost_ipc_tests.cpp)
 
 # Tests
 option(COMPILE_TESTS "Compile test modules (necessary to run the python tests)" false)
