@@ -19,10 +19,8 @@ if(DEFINED ENV{CONDA_ENV_PATH})
     endif()
 
     if ((NOT DEFINED ${PYTHON_LIBRARY})  AND (NOT DEFINED ${PYTHON_INCLUDE_DIR}))
-        set(PYTHON_LIBRARY $ENV{CONDA_ENV_PATH}/lib)
+        set(PYTHON_LIBRARY $ENV{CONDA_ENV_PATH}/libs)
         execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
-        message(STATUS "  PYTHON_LIBRARY=${PYTHON_LIBRARY}")
-        message(STATUS "  PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
     endif()
 endif()
 
@@ -46,6 +44,19 @@ if (NOT ${PYTHONLIBS_FOUND})
 endif()
 
 execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+message(STATUS "Python directories being used:")
+message(STATUS "  PYTHON_LIBRARY=${PYTHON_LIBRARY}")
+message(STATUS "  PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
+
+if (${PYTHON_INCLUDE_DIR})
+    message(FATAL_ERROR "Aborting because couldn't find python libraries
+         You can pass the variables:
+             -DPYTHON_LIBRARY=<python_path>/libs
+             -DPYTHON_INCLUDE_DIR=<python_path>/Include
+         if necessary.
+        ")
+endif()
 
 include_directories(
     ${Boost_INCLUDE_DIRS}
