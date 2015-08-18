@@ -11,6 +11,13 @@ find_package(Boost REQUIRED COMPONENTS python)
 
 find_package(PythonInterp REQUIRED)
 
+option(PY_DEBUG "Set if python being linked is a Py_DEBUG build" Off)
+
+if (${PY_DEBUG})
+    # see: http://www.boost.org/doc/libs/1_59_0/libs/python/doc/building.html#python-debugging-builds
+    add_definitions(-DBOOST_DEBUG_PYTHON)
+endif()
+
 # Detect if we're running a python created with conda
 if(DEFINED ENV{CONDA_ENV_PATH})
     message(STATUS "Conda detected")
