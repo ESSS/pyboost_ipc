@@ -1,0 +1,6 @@
+name: pyboost_ipc
+dependencies:
+- boost>=1.55
+- cmake>=3.0
+- python>=2.7
+
