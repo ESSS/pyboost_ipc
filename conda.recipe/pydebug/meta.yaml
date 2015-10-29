@@ -1,0 +1,33 @@
+package:
+  name: pyboost_ipc
+  version: 0.1
+
+build:
+  number: 1
+  string: py27_d1
+
+  features:
+    - debug
+
+
+source:
+  git_url: git@github.com:ESSS/pyboost_ipc.git
+  git_rev: v0.1
+
+requirements:
+  build:
+    - debug
+    - gcc [linux]
+    - cmake >=3.0
+    - python
+    - boost >=1.55
+  run:
+    - debug
+    - python
+    - boost >=1.55
+
+test:
+  requires:
+    - debug
+    - python
+    - boost >=1.55
