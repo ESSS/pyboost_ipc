@@ -14,22 +14,26 @@ if (${PY_DEBUG})
     add_definitions(-DBOOST_DEBUG_PYTHON)
     set(Boost_USE_DEBUG_PYTHON True)
     set(CMAKE_DEBUG_POSTFIX _d)
+    set(PYTHON_EXECUTABLE python_d)
+else()
+    set(PYTHON_EXECUTABLE python)
 endif()
-
-find_package(Boost REQUIRED COMPONENTS python)
-find_package(PythonInterp REQUIRED)
 
 # Detect if we're running a python created with conda
 if(DEFINED ENV{CONDA_ENV_PATH})
     message(STATUS "Conda detected")
-    if (NOT ${PYTHONINTERP_FOUND})
-        message(FATAL_ERROR "Your python-conda is configured in a strange-way...we couldn't find the interpreter")
+
+    if (NOT ${CMAKE_INSTALL_PREFIX} STREQUAL $ENV{CONDA_ENV_PATH})
+        message(WARNING "The install prefix (${CMAKE_INSTALL_PREFIX}) is different than the CONDA_ENV_PATH variable ($ENV{CONDA_ENV_PATH}). Are you sure nothing is wrong? You probably should pass -DCMAKE_INSTALL_PREFIX=$ENV{CONDA_ENV_PATH}")
     endif()
 
     if ((NOT DEFINED ${PYTHON_LIBRARY})  AND (NOT DEFINED ${PYTHON_INCLUDE_DIR}))
         set(PYTHON_LIBRARY $ENV{CONDA_ENV_PATH}/libs)
         execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
     endif()
+
+    set(BOOST_INCLUDEDIR $ENV{CONDA_ENV_PATH}/include)
+    set(BOOST_LIBRARYDIR $ENV{CONDA_ENV_PATH}/lib)
 endif()
 
 find_package(PythonLibs)
@@ -65,6 +69,8 @@ if (${PYTHON_INCLUDE_DIR})
          if necessary.
         ")
 endif()
+
+find_package(Boost 1.55 REQUIRED COMPONENTS python)
 
 include_directories(
     ${Boost_INCLUDE_DIRS}
