@@ -1,4 +1,7 @@
 #include <boost/python.hpp>
+
+#include <pyboost_ipc/scoped_gil_release.hpp>
+
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <boost/shared_ptr.hpp>
 
@@ -33,7 +36,10 @@ tuple wrap_receive(boost::shared_ptr<message_queue> p_self, object buffer)
     message_queue::size_type recvd_size;
     unsigned int priority;
     Py_buffer pybuf = get_buffer(buffer, PyBUF_WRITABLE);
-    p_self->receive(pybuf.buf, pybuf.len, recvd_size, priority);
+    {
+        ScopedGilRelease release_gil;
+        p_self->receive(pybuf.buf, pybuf.len, recvd_size, priority);
+    }
     return make_tuple(recvd_size, priority);
 }
 
