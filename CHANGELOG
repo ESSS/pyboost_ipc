@@ -1,0 +1,8 @@
+2015-11-25   0.2:
+-----------------
+  * message_queue::receive() releases the GIL
+
+
+2015-10-27   0.1:
+-----------------
+  * initial release
