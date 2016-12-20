@@ -15,60 +15,16 @@ if (${PY_DEBUG})
     set(Boost_USE_DEBUG_PYTHON True)
     set(CMAKE_DEBUG_POSTFIX _d)
     set(PYTHON_EXECUTABLE python_d)
-else()
-    set(PYTHON_EXECUTABLE python)
 endif()
 
-# Detect if we're running a python created with conda
-if(DEFINED ENV{CONDA_ENV_PATH})
-    message(STATUS "Conda detected")
-
-    if (NOT ${CMAKE_INSTALL_PREFIX} STREQUAL $ENV{CONDA_ENV_PATH})
-        message(WARNING "The install prefix (${CMAKE_INSTALL_PREFIX}) is different than the CONDA_ENV_PATH variable ($ENV{CONDA_ENV_PATH}). Are you sure nothing is wrong? You probably should pass -DCMAKE_INSTALL_PREFIX=$ENV{CONDA_ENV_PATH}")
-    endif()
-
-    if ((NOT DEFINED ${PYTHON_LIBRARY})  AND (NOT DEFINED ${PYTHON_INCLUDE_DIR}))
-        set(PYTHON_LIBRARY $ENV{CONDA_ENV_PATH}/libs)
-        execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
-    endif()
-
-    set(BOOST_INCLUDEDIR $ENV{CONDA_ENV_PATH}/include)
-    set(BOOST_LIBRARYDIR $ENV{CONDA_ENV_PATH}/lib)
-endif()
-
-find_package(PythonLibs)
-
-if (NOT ${PYTHONLIBS_FOUND})
-    message(STATUS "Trying to use the 'libs' and 'Include' directories at the python interpreter path")
-    if (NOT ${PYTHONINTERP_FOUND})
-        message(FATAL_ERROR "Didn't find the python libraries nor a python interpreter. You can pass the variables:
-                             -DPYTHON_LIBRARY=<python_path>/libs
-                             -DPYTHON_INCLUDE_DIR=<python_path>/Include
-                             instead.
-                             Make sure that the Python.h and the static libraries are installed (conda install libpython)
-                             "
-               )
-    endif()
-
-    get_filename_component(PYTHONINTERP_PATH ${PYTHON_EXECUTABLE} DIRECTORY)
-    set(PYTHON_LIBRARIES ${PYTHONINTERP_PATH}/libs)
-    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INCLUDE_DIRS OUTPUT_STRIP_TRAILING_WHITESPACE)
-endif()
+find_package(PythonInterp REQUIRED)
+find_package(PythonLibs REQUIRED)
 
 execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 message(STATUS "Python directories being used:")
 message(STATUS "  PYTHON_LIBRARY=${PYTHON_LIBRARY}")
-message(STATUS "  PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
-
-if (${PYTHON_INCLUDE_DIR})
-    message(FATAL_ERROR "Aborting because couldn't find python libraries
-         You can pass the variables:
-             -DPYTHON_LIBRARY=<python_path>/libs
-             -DPYTHON_INCLUDE_DIR=<python_path>/Include
-         if necessary.
-        ")
-endif()
+message(STATUS "  PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}")
 
 find_package(Boost 1.55 REQUIRED COMPONENTS python)
 
