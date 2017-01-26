@@ -4,6 +4,8 @@ Python bindings for the  C++ library [Boost.Interprocess](http://www.boost.org/d
 
 # Goal
 
+[![Join the chat at https://gitter.im/ESSS/pyboost_ipc](https://badges.gitter.im/ESSS/pyboost_ipc.svg)](https://gitter.im/ESSS/pyboost_ipc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 To provide an almost 1-1 of the Boost.Interprocess library. It is not meant to expand on the features of Boost.Interprocess.
 
 The ideal usage scenario is when you have a C++ code and you want to expose its data through IPC (using Boost.Interprocess) and receive that data in python.
